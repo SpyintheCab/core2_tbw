@@ -304,11 +304,14 @@ def payout():
         print('Payout started!')
         
         tx_count = v_count+d_count
-        multi_limit = dynamic.get_multipay_limit()
-        if tx_count%multi_limit == 0:
-            numtx = round(tx_count/multi_limit)
+        if data.multi == "Y":
+            multi_limit = dynamic.get_multipay_limit()
+            if tx_count%multi_limit == 0:
+                numtx = round(tx_count/multi_limit)
+            else:
+                numtx = round(tx_count//multi_limit)+1
         else:
-            numtx = round(tx_count//multi_limit)+1
+            numtx = tx_count
 
         # calculate tx fees needed to cover run in satoshis
         tx_fees = int(numtx * transaction_fee)
